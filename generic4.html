@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>Othello with MCTS</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+	<!-- Header -->
+	<header id="header">
+		<a href="index.html" class="title">&#x1F878</a>
+		<nav>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="#" class="active">Othello</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<h1 class="major">Othello with MCTS</h1>
+				<ul class="actions">
+					<li><a href="https://github.com/beloof/othello_MCTS" class="button large" style="font-size: 15px;"><i class="fa-brands fa-github " style="font-size: 15px;"></i>  Repository</a></li>
+				</ul>
+
+				<section>
+					<div class="box alt">
+						<div class="row gtr-uniform">
+							<p>This project implements an Othello game using a bitboard representation for efficient game state management. The AI for the game is built using the Monte Carlo Tree Search (MCTS) algorithm. The repository is structured to allow for easy experimentation and includes features for running matches, visualizing gameplay, and conducting tournaments.</p>
+							<div class="col-12"><span class="image fit"><img src="images/pic16.png" alt="" /></span></div>
+						</div>
+					</div>
+				</section>
+
+				<hr style="border-width: 5px" />
+				<h2>Features</h2>
+				<hr />
+				<ul>
+					<li><strong>Bitboard Representation</strong>: Efficiently encodes game states using binary operations.</li>
+					<li><strong>Monte Carlo Tree Search (MCTS)</strong>: Implements an AI player for Othello.</li>
+					<li><strong>Game Visualization</strong>: Uses Pygame to display the Othello grid and gameplay.</li>
+					<li><strong>Tournament Simulation</strong>: Allows multiple AI configurations to compete against each other.</li>
+					<li><strong>Parallel Execution</strong>: Leverages Python's <code>concurrent.futures</code> for running matches in parallel.</li>
+				</ul>
+
+				<hr style="border-width: 5px" />
+
+				<h2>Installation</h2>
+				<hr />
+				<ol>
+					<li>
+						Clone the repository:
+						<pre><code>git clone https://github.com/beloof/othello_MCTS</code></pre>
+					</li>
+					<li>
+						Install dependencies:
+						<pre><code>cd othello_MCTS
+pip install .</code></pre>
+					</li>
+				</ol>
+
+				<hr style="border-width: 5px" />
+
+				<h2>Usage</h2>
+				<hr />
+				<h3>Running a Match</h3>
+				<p>To play a single match between two AI players:</p>
+				<pre><code>from othello_MCTS import show_match
+show_match(MCTS(), MCTS())</code></pre>
+
+				<h3>Tournament Simulation</h3>
+				<p>To run a tournament among multiple AI configurations:</p>
+				<pre><code>from othello_MCTS import tournament
+
+params_list = [
+    {
+        'selection_method': 'random',
+        'iterations_per_simulation': 1,
+        'runtime': 5,
+        'cap_method': 'time'
+    },
+    {
+        'selection_method': 'uct',
+        'iterations_per_simulation': 100,
+        'runtime': 10,
+        'cap_method': 'iterations'
+    }
+]
+
+tournement(params_list)</code></pre>
+
+				<h3>Visualizing Matches</h3>
+				<p>To visualize gameplay between two AI players:</p>
+				<pre><code>from othello_MCTS import show_match, MCTS
+show_match(MCTS(),MCTS())</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2>File Structure</h2>
+				<hr />
+				<pre><code>.
+├── othello_MCTS/
+│   ├── __init__.py          
+│   ├── bitboard.py          # Bitboard implementation for Othello
+│   ├── simulation.py        # basic functions to show/play matches
+│   └── MCTS.py              # MCTS algorithm implementation
+├── docs/                    # html documentation
+├── images/                  # readme image
+├── main.py                  # Main script for running matches and tournaments
+├── setup.py                 # Python setup file
+└── README.md                # Documentation</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2>How It Works</h2>
+				<hr />
+				<h3>Bitboard Representation</h3>
+				<p>The game board is represented as an 8x8 grid encoded into a 72-bit integer for each player. Binary operations are used to calculate valid moves, check for wins, and update game states efficiently.</p>
+				<pre><code>.   .   .   .   .   .   .   .
+7  16  25  34  43  52  61  70
+6  15  24  33  42  51  60  69
+5  14  23  32  41  50  59  68
+4  13  22  31  40  49  58  67
+3  12  21  30  39  48  57  66
+2  11  20  29  38  47  56  65
+1  10  19  28  37  46  55  64
+0   9  18  27  36  45  54  63</code></pre>
+				<p>Check <a href="http://blog.gamesolver.org/solving-connect-four/06-bitboard/">this</a> for more details.</p>
+
+				<h3>Monte Carlo Tree Search (MCTS)</h3>
+				<p>The MCTS algorithm uses the following steps to determine the best move:</p>
+				<ol>
+					<li><strong>Selection</strong>: Traverses the game tree using a selection strategy (e.g., UCT).</li>
+					<li><strong>Expansion</strong>: Adds a new node to the tree.</li>
+					<li><strong>Simulation</strong>: Simulates random playouts from the new node.</li>
+					<li><strong>Backpropagation</strong>: Updates the node values based on the simulation outcomes.</li>
+				</ol>
+
+				<h3>Tournament Simulation</h3>
+				<p>A tournament is run by pairing different AI configurations and letting them play multiple matches. Results are saved in <code>.npy</code> and <code>.txt</code> formats for analysis.</p>
+
+				<hr style="border-width: 5px" />
+
+				<h2>Dependencies</h2>
+				<hr />
+				<ul>
+					<li><code>pygame</code></li>
+					<li><code>numpy</code></li>
+					<li><code>matplotlib</code></li>
+				</ul>
+				<p>Install dependencies using:</p>
+				<pre><code>pip install .</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2>Documentation</h2>
+				<hr />
+				<p>Full documentation <a href="https://github.com/beloof/othello_MCTS/tree/master/docs/build/html">here</a></p>
+
+				<hr style="border-width: 5px" />
+
+				<h2>Future Work</h2>
+				<hr />
+				<ul>
+					<li>Add a human vs. AI mode.</li>
+					<li>Implement advanced heuristics for MCTS simulations.</li>
+					<li>Enhance visualization with real-time statistics.</li>
+					<li>Optimize bitboard operations for larger grids.</li>
+				</ul>
+			</div>
+		</section>
+
+	</div>
+
+	<!-- Footer -->
+	<footer id="footer" class="wrapper alt">
+		<div class="inner">
+			<ul class="menu">
+				<li>&copy; Untitled. All rights reserved.</li>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+</html>

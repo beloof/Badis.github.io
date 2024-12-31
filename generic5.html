@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<script type="text/javascript" async
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>fractallib - Python Package for Mandelbrot & Julia Fractals</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+	<!-- Header -->
+	<header id="header">
+		<a href="index.html" class="title">&#x1F878</a>
+		<nav>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="#" class="active">fractallib</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main" class="wrapper">
+			<div class="inner">
+				<h1 class="major">fractallib - Python Package for Generating Mandelbrot & Julia Fractals</h1>
+				<ul class="actions">
+					<li><a href="https://github.com/beloof/fractallib" class="button large" style="font-size: 15px;"><i class="fa-brands fa-github" style="font-size: 15px;"></i> Repository</a></li>
+				</ul>
+
+				<section>
+					<div class="box alt">
+						<div class="row gtr-uniform">
+							<p>fractallib is a Python package for generating and visualizing Mandelbrot and Julia fractals. It provides an interactive GUI with adjustable parameters and can export high-resolution images of the generated fractals. Enjoy exploring these fascinating fractals!</p>
+							<div class="col-12"><span class="image fit"><img src="images/pic01.png" alt="Fractal Example" /></span></div>
+						</div>
+					</div>
+				</section>
+
+				<hr style="border-width: 5px" />
+				<h2>Table of Contents</h2>
+				<hr />
+				<ul>
+					<li><a href="#math">Math</a></li>
+					<li><a href="#installation">Installation</a></li>
+					<li><a href="#features">Features</a></li>
+					<li><a href="#usage">Usage</a></li>
+					<li><a href="#examples">Examples</a></li>
+					<li><a href="#documentation">Documentation</a></li>
+					<li><a href="#license">License</a></li>
+					<li><a href="#acknowledgements">Acknowledgements</a></li>
+				</ul>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="math">Math</h2>
+				<hr />
+				<p>The images describe how fast the series \( Z_n \) grows. The darker the point, the faster it escaped the threshold \( |Z| \leq 2 \). White points never escaped.</p>
+				<p><strong>Formula:</strong></p>
+				<p>\( Z_{n+1} = Z_n^2 + C \)</p>
+				<ul>
+					<li>To represent the Mandelbrot set, \( Z_0 \) is fixed while \( C \) takes values in a square-shaped region, centered around (0,0) with an edge of length 4.</li>
+					<li>To represent the Julia set, \( C \) is fixed while \( Z_0 \) covers the previously stated region.</li>
+				</ul>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="installation">Installation</h2>
+				<hr />
+				<p>To install the package, use the following commands:</p>
+				<pre><code>git clone https://github.com/beloof/fractallib.git
+cd fractallib
+pip install .</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="features">Features</h2>
+				<hr />
+				<ul>
+					<li>Generate Mandelbrot and Julia fractals.</li>
+					<li>Customize fractal parameters like depth and resolution.</li>
+					<li>Interactive GUI with sliders to explore fractal details in real-time.</li>
+					<li>Export fractals as high-resolution PNG images.</li>
+				</ul>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="usage">Usage</h2>
+				<hr />
+				<h3>Basic Mandelbrot Generation</h3>
+				<p>To generate a Mandelbrot fractal matrix, use the following code:</p>
+				<pre><code>from fractallib import get_image
+
+# Generate and save the Mandelbrot fractal
+get_image(resolution=2000, n=50)</code></pre>
+				<p>Or run this command in Cmd:</p>
+				<pre><code>python -m fractallib mandelbrot -r 2000 -n 50</code></pre>
+
+				<h3>Generating and Exporting a Julia Fractal</h3>
+				<p>To generate and save a Julia fractal:</p>
+				<pre><code>from fractallib import get_image
+
+# Generate and save the Julia fractal
+get_image(c=-0.4 + 0.6j, resolution=2000, n=50, path='julia_fractal.png')</code></pre>
+				<p>Or run this command:</p>
+				<pre><code>python -m fractallib julia --real -0.4 --imaginary 0.6 -r 2000 -n 50 -o julia_fractal.png</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="examples">Examples</h2>
+				<hr />
+				<p>Here are some example commands for different types of fractals:</p>
+
+				<h3>Basic Mandelbrot Set</h3>
+				<pre><code>fractallib.get_image(resolution=1000, n=100)</code></pre>
+				<p>Or:</p>
+				<pre><code>python -m fractallib mandelbrot -r 1000 -n 100</code></pre>
+
+				<h3>High-Resolution Julia Set</h3>
+				<pre><code>fractallib.get_image(c=-0.8 + 0.156j, resolution=3000, n=100, path='high_res_julia.png')</code></pre>
+				<p>Or:</p>
+				<pre><code>python -m fractallib julia --real -0.8 --imaginary 0.156 -r 3000 -n 100 -o high_res_julia.png</code></pre>
+
+				<h3>Interactive GUI</h3>
+				<p>Run an interactive session with sliders to adjust fractal parameters in real-time:</p>
+				<pre><code>fractallib.show_initial(resolution=200, n=20)</code></pre>
+				<p>Or:</p>
+				<pre><code>python -m fractallib mandelbrot -r 200 -n 20 --show</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="documentation">Documentation</h2>
+				<hr />
+				<p>Full documentation is available at <a href="https://github.com/beloof/fractallib/blob/main/documentation/build/html/fractallib.html">fractallib documentation</a>.</p>
+				<p>To see the available commands in Cmd, run:</p>
+				<pre><code>python -m fractallib -h</code></pre>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="license">License</h2>
+				<hr />
+				<p>This project is licensed under the MIT License. See the LICENSE file for more details.</p>
+
+				<hr style="border-width: 5px" />
+
+				<h2 id="acknowledgements">Acknowledgements</h2>
+				<hr />
+				<p>Special thanks to the Python, matplotlib, and numpy communities for their contributions to this project.</p>
+			</div>
+		</section>
+
+	</div>
+
+	<!-- Footer -->
+	<footer id="footer" class="wrapper alt">
+		<div class="inner">
+			<ul class="menu">
+				<li>&copy; Untitled. All rights reserved.</li>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+</html>

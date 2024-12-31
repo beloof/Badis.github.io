@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>
+		RAG Recipe Recommendation App
+	</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">&#x1F878</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#" class="active">Recipe App</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">RAG Recipe Recommendation App</h1>
+						<ul class="actions">
+							<li><a href="https://github.com/beloof/RAG_cooking_recipes" class="button large" style="font-size: 15px;"><i class="fa-brands fa-github " style="font-size: 15px;"></i>  Repository</a></li>
+						</ul>
+						<section>
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<p>
+										This project is a web app built using <strong>Streamlit</strong>, <strong>LangChain</strong>, <strong>Mistral AI</strong>, and <strong>FAISS</strong>. It implements Retrieval-Augmented Generation <strong>(RAG)</strong> and Large Language Models <strong>(LLMs)</strong> to generate creative and unique recipes based on user-provided ingredients.
+
+										The app fetches relevant recipes from a pre-built FAISS index of recipes, utilizes LLMs for natural language understanding and processing, and reformulates the selected recipe using AI-driven creativity to suggest a new dish.
+									</p>
+									<div class="col-12"><span class="image fit"><img src="images/pic14.png" alt="" /></span></div>
+								</div>
+							</div>
+						</section>
+						<hr style="border-width: 5px" />
+						<section>
+							<h2>Features</h2>
+							<hr />
+							<ul>
+								<li><strong>RAG Pipeline</strong>: Combines information retrieval with language generation to provide relevant and customized recipe suggestions.</li>
+								<li><strong>Retrieve Recipes</strong>: Find recipes based on ingredients using FAISS for efficient vector similarity search.</li>
+								<li><strong>AI Reformulation with LLMs</strong>: Generate new and creative recipes by leveraging the power of Mistral AI.</li>
+								<li><strong>Regenerate Recipes</strong>: Regenerate random recipes at the click of a button for variety and inspiration.</li>
+							</ul>
+						</section>
+
+						<hr style="border-width: 5px" />
+
+						<section>
+							<h2>Requirements</h2>
+							<hr />
+							<p>To run this project locally, you need the following Python libraries:</p>
+							<ul>
+								<li><code>pandas</code></li>
+								<li><code>langchain</code></li>
+								<li><code>langchain_community</code></li>
+								<li><code>streamlit</code></li>
+								<li><code>faiss-cpu</code></li>
+								<li><code>langchain_mistralai</code></li>
+								<li><code>huggingface-hub</code></li>
+								<li><code>python-dotenv</code></li>
+								<li><code>sentence-transformers</code></li>
+							</ul>
+						</section>
+
+						<hr style="border-width: 5px" />
+
+						<section>
+							<h2>Setup</h2>
+							<hr />
+							<h3>1. Clone the repository</h3>
+							<pre><code>git clone https://github.com/beloof/RAG_cooking_recipes.git</code></pre>
+
+							<h3>2. Install dependencies</h3>
+							<pre><code>cd RAG_cooking_recipes
+pip install .
+</code></pre>
+
+							<h3>3. Set up your environment variables</h3>
+							<p>Update the <code>.env</code> file and add your Mistral API key:</p>
+							<pre><code>MISTRAL_API_KEY=your_mistral_api_key</code></pre>
+
+							<h3>4. Prepare the FAISS Index (Optional)</h3>
+							<p>
+								The repository already includes preprocessed data (<code>recipes_cleaned.csv</code>) and a pre-built FAISS index stored in the <strong>faiss_index/</strong> directory.
+								However, if you wish to modify the dataset or rebuild the FAISS index from scratch, you can run the <strong>data preparation script</strong>:
+							</p>
+							<pre><code>python data_prep.py</code></pre>
+
+							<h3>5. Launch the Streamlit app</h3>
+							<pre><code>streamlit run file_location\rag_app.py</code></pre>
+						</section>
+
+						<hr style="border-width: 5px" />
+
+						<section>
+							<h2>Repository Structure</h2>
+							<hr />
+							<div class="table-wrapper">
+								<table>
+									<thead>
+										<tr>
+											<th>Path</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>RAG_cooking_recipes/</td>
+											<td>Main project directory</td>
+										</tr>
+										<tr>
+											<td>├── faiss_index/</td>
+											<td>Directory to store FAISS index files</td>
+										</tr>
+										<tr>
+											<td>├── data_prep.py</td>
+											<td>Script to prepare the dataset and build FAISS index</td>
+										</tr>
+										<tr>
+											<td>├── rag_app.py</td>
+											<td>Main Streamlit app for recipe generation</td>
+										</tr>
+										<tr>
+											<td>├── recipes.csv</td>
+											<td>Original dataset of recipes</td>
+										</tr>
+										<tr>
+											<td>├── recipes_cleaned.csv</td>
+											<td>Preprocessed dataset with clean recipes</td>
+										</tr>
+										<tr>
+											<td>├── setup.py</td>
+											<td>Setup file for dependency installation</td>
+										</tr>
+										<tr>
+											<td>├── .env</td>
+											<td>Environment variables</td>
+										</tr>
+										<tr>
+											<td>└── README.md</td>
+											<td>Project documentation</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+						<hr style="border-width: 5px" />
+						<div class="usage-example">
+							<h2>Usage Example</h2>
+							<hr/>
+							<ul>
+								<li>Enter ingredients like:</li>
+								<pre><code>chicken, rosemary, garlic</code></pre>
+								<li>Pick a recipe from the dropdown menu based on its title.</li>
+								<li>Click Regenerate Random Recipes to fetch new suggestions.</li>
+								<li>View the AI-generated, reformulated recipe in the output section.</li>
+							</ul>
+						</div>
+
+
+					</div>
+				</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

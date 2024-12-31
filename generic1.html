@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>AI Car Simulation</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">&#x1F878</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#" class="active">AI Car</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">AI Car Simulation</h1>
+						<ul class="actions">
+							<li><a href="https://github.com/beloof/genetic_algorithm_car" class="button large" style="font-size: 15px;"><i class="fa-brands fa-github " style="font-size: 15px;"></i>  Repository</a></li>
+						</ul>
+						<section>
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<p>This project simulates cars learning to drive on custom tracks using a genetic algorithm. The goal is for cars to navigate tracks effectively by evolving their neural network brains over generations.</p>
+									<div class="col-12"><span class="image fit"><img src="images/pic07.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic08.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic09.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic10.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic11.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic12.png" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/pic13.png" alt="" /></span></div>
+								</div>
+							</div>
+						</section>
+						<hr style="border-width: 5px" />
+						<h2>How the Algorithm Works</h2>
+						<hr />
+						<h3>1. <strong>Initialization</strong></h3>
+						<ul>
+							<li>A population of cars is created, each with a neural network (the "brain") initialized with random weights and biases.</li>
+						</ul>
+
+						<h3>2. <strong>Simulation</strong></h3>
+						<ul>
+							<li>Each car navigates the track using sensors to detect distances to track boundaries.</li>
+							<li>The neural network processes sensor data to decide steering actions.</li>
+							<li>Cars accumulate a fitness score based on performance (e.g., distance traveled without crashing).</li>
+						</ul>
+
+						<h3>3. <strong>Evolution</strong></h3>
+						<ul>
+							<li>After all cars crash or finish, the genetic algorithm selects the top-performing cars as parents.</li>
+							<li><strong>Crossover:</strong> Parent neural networks are combined to produce offspring.</li>
+							<li><strong>Mutation:</strong> Random changes are introduced to offspring networks to explore new solutions.</li>
+						</ul>
+
+						<h3>4. <strong>Next Generation</strong></h3>
+						<ul>
+							<li>The new population replaces the old, and the process repeats for multiple generations.</li>
+							<li>Over time, cars improve their ability to navigate tracks.</li>
+						</ul>
+						<hr style="border-width: 5px" />
+						<h2>Project Structure</h2>
+						<hr />
+						<div class="table-wrapper">
+							<table>
+								<thead>
+									<tr>
+										<th>Path</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>genetic_algorithm_car/</td>
+										<td>Main project directory</td>
+									</tr>
+									<tr>
+										<td>├── core/</td>
+										<td>Contains core functionality of the project</td>
+									</tr>
+									<tr>
+										<td>│	├── brain.py</td>
+										<td>Neural network logic for the cars</td>
+									</tr>
+									<tr>
+										<td>│   ├── car.py</td>
+										<td>Car class managing sensors, movement, and brain</td>
+									</tr>
+									<tr>
+										<td>│   ├── simulation.py</td>
+										<td>Main simulation loop and population management</td>
+									</tr>
+									<tr>
+										<td>│   ├── track.py</td>
+										<td>Track creation and management</td>
+									</tr>
+									<tr>
+										<td>│   └── ui.py</td>
+										<td>UI elements (buttons, prompts)</td>
+									</tr>
+									<tr>
+										<td>├── data/</td>
+										<td>Save pickle files for brains and generations</td>
+									</tr>
+									<tr>
+										<td>├── icon/</td>
+										<td>Icon files</td>
+									</tr>
+									<tr>
+										<td>├── track/</td>
+										<td>Custom track pickle files</td>
+									</tr>
+									<tr>
+										<td>├── setup.py</td>
+										<td>Setup file</td>
+									</tr>
+									<tr>
+										<td>└── main.py</td>
+										<td>Entry point for the program</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<hr style="border-width: 5px" />
+						<h2>How to Use</h2>
+						<hr />
+
+						<h3>1. <strong>Setup</strong></h3>
+						<ul>
+							<li>Install dependencies:</li>
+						</ul>
+<pre><code>git clone https://github.com/beloof/genetic_algorithm_car
+cd genetic_algorithm_car
+pip install .
+</code></pre>
+
+						<h3>2. <strong>Run the Simulation</strong></h3>
+						<ul>
+							<li>Execute the main script to start the simulation:</li>
+						</ul>
+<pre><code>python main.py
+</code></pre>
+						<ul>
+							<li>Create or load a track and observe the cars learning over generations.</li>
+						</ul>
+
+						<h3>3. <strong>Features</strong></h3>
+						<ul>
+							<li>Save and load generations to continue training.</li>
+							<li>Create, save and load tracks.</li>
+							<li>Observe performance metrics like fitness scores and generations.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>Training Advice</h2>
+						<hr />
+						<ul>
+							<li>Avoid using wide paths; the agents will go in circles and their fitness will explode.</li>
+							<li>Starting agents near a corner can speed up progress during the initial generations.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+
+
+
+						<h2>To be Added</h2>
+						<hr>
+						<p>Planned future enhancements:</p>
+						<ol>
+							<li><strong>Unit Testing</strong>: Implement unit tests to ensure code reliability and correctness.</li>
+							<li><strong>Performance Optimization and GPU Acceleration</strong>: Leverage GPU computation (e.g., via CUDA) to accelerate neural network operations and simulation.</li>
+							<li><strong>Hyperparameter Tuning</strong>: Use Bayesian optimization (e.g., <code>BayesSearchCV</code>) to find optimal mutation rates, population sizes, and network architectures.</li>
+							<li><strong>Improved Fitness Function</strong>: Develop a more robust fitness function to better evaluate car performance and behavior.</li>
+							<li><strong>Diversity in Reproduction</strong>: Adjust reproduction logic to discourage identical individuals and maintain population diversity.</li>
+							<li><strong>Bug Fixes and Code Cleanup</strong>: Add comments and docstrings, and remove or update junk code.</li>
+						</ol>
+					</div>
+				</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
