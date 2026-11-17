@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>Stylised Water Shader – Unity</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">&#x1F878</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#" class="active">Water Shader</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Stylised Water with a Camera-Based Foam Mask</h1>
+						<p><strong>Unity 6 (URP) · Shader Graph · C# · render textures</strong> — Centrale Nantes, infoRV (virtual reality) track, 2026.</p>
+						<ul class="actions">
+							<li><a href="docs/water-shader-report.pdf" class="button" style="font-size: 15px;"><i class="fa-solid fa-file-pdf"></i>&nbsp; Technical report (PDF)</a></li>
+						</ul>
+						<p>A water shader built around one technique I wanted to explore: placing foam with a dedicated mask camera instead of depth differences, so the foam stays stable from any viewing angle.</p>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><video src="images/videos/water.mp4" poster="images/videos/water-poster.jpg" autoplay muted loop playsinline controls preload="metadata" style="width:100%;display:block" aria-label="Water shader with caustics and foam around moving objects"></video></span></div>
+							</div>
+						</div>
+
+						<hr style="border-width: 5px" />
+						<h2>1. Depth-based colour</h2>
+						<hr />
+						<p>Scene depth minus the water surface's own depth gives how much water you look through. That thickness, normalised and clamped, blends the scene colour behind the water towards a deep colour, a simple and controllable imitation of light absorption.</p>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><img src="images/shaders/water-depth-colour.png" alt="Depth-based colour: an underwater cube is tinted and a cylinder fades with depth" /></span></div>
+							</div>
+						</div>
+
+						<hr style="border-width: 5px" />
+						<h2>2. Animated surface pattern</h2>
+						<hr />
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><img src="images/shaders/water-caustics.png" alt="Voronoi-based animated caustic pattern on the water surface" /></span></div>
+							</div>
+						</div>
+						<p>Voronoi distance raised to a power leaves thin bright lines between cells, like light patterns on a pool floor. The UVs scroll over time and a triangle wave drives the Voronoi angle offset, so the cells drift and reshape.</p>
+
+						<hr style="border-width: 5px" />
+						<h2>3. Foam from a second camera</h2>
+						<hr />
+						<p>An orthographic camera sits under the water, looks straight up, and only sees a thin slice around the water line (near/far planes set by a C# script). It renders into a render texture: white wherever an object touches the water. The camera snaps to a texel grid as it follows its target, so the foam does not shimmer.</p>
+						<p><strong>Why not depth-based foam?</strong> Depth foam depends on the player camera: at grazing angles the same foam covers a much larger area. The mask camera is independent of the view, so foam looks identical from every angle. The trade-off is one extra render.</p>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-4"><span class="image fit"><img src="images/shaders/water-foam-raw.png" alt="Raw mask: thin contact line" /></span></div>
+								<div class="col-4"><span class="image fit"><img src="images/shaders/water-foam-ring.png" alt="Foam ring after dilation and smoothstep" /></span></div>
+								<div class="col-4"><span class="image fit"><img src="images/shaders/water-foam-final.png" alt="Final foam broken up by moving noise" /></span></div>
+							</div>
+						</div>
+
+						<hr style="border-width: 5px" />
+						<h2>4. Turning the mask into foam</h2>
+						<hr />
+						<ul>
+							<li>Each water pixel converts its world XZ position into a UV on the mask, relative to the mask camera's position and size (sent by the script).</li>
+							<li>The mask is sampled 9 times (centre + 8 neighbours) and the <strong>maximum</strong> is kept, a dilation that grows a ring around each object. A smoothstep softens the edge (raw mask left, dilated ring centre).</li>
+							<li>The ring is multiplied by slowly drifting gradient noise, so the foam gets moving gaps (right).</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>Limitations and next steps</h2>
+						<hr />
+						<p>The overall look is still basic: no waves, specular highlights, or refraction distortion yet, and the foam is a static mask rather than a fading trail behind moving objects. Those are the next things I would add.</p>
+					</div>
+				</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; LASSIOUED Badis. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

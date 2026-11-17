@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>Interactive Grass Shader – Unity</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">&#x1F878</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#" class="active">Grass Shader</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">Interactive Grass Shader</h1>
+						<p><strong>Unity 6 (URP) · Shader Graph (vertex + fragment) · C#</strong> — Centrale Nantes, infoRV (virtual reality) track, 2026.</p>
+						<ul class="actions">
+							<li><a href="docs/grass-shader-report.pdf" class="button" style="font-size: 15px;"><i class="fa-solid fa-file-pdf"></i>&nbsp; Technical report (PDF)</a></li>
+						</ul>
+
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><video src="images/videos/grass.mp4" poster="images/videos/grass-poster.jpg" autoplay muted loop playsinline controls preload="metadata" style="width:100%;display:block" aria-label="Grass field swaying in the wind and bending around a moving capsule"></video></span></div>
+							</div>
+						</div>
+						<p>A field of grass that sways in the wind, shows travelling gusts, and bends away from the player in real time. Everything is driven by three shared signals, so motion and colour always stay in sync.</p>
+
+						<hr style="border-width: 5px" />
+						<h2>The core idea</h2>
+						<hr />
+						<p>Each blade is treated as a vertical gradient. Three signals feed both the vertex and fragment stages:</p>
+						<ul>
+							<li><strong>Height mask</strong>: 0 at the root, 1 at the tip. It pins the roots during movement and blends the colour from bottom to top. It is divided by the object's Y scale, so tall and short grass blend over the same world distance.</li>
+							<li><strong>Wind gust mask</strong>: a wind texture sampled in <em>world space</em> and scrolled over time, so gusts sweep across the field as visible waves instead of every blade moving at once.</li>
+							<li><strong>Tracker position</strong>: the interacting object's position, sent from C# as a global shader property.</li>
+						</ul>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><img src="images/shaders/grass-height-gradient.png" alt="Height mask preview: dark roots, light tips" /></span></div>
+							</div>
+						</div>
+
+						<hr style="border-width: 5px" />
+						<h2>Vertex stage: how the grass moves</h2>
+						<hr />
+						<ul>
+							<li><strong>Ambient sway</strong>: scrolling gradient noise, scaled by a wind-intensity parameter.</li>
+							<li><strong>Wind gusts</strong>: the world-space wind texture, read with <code>Sample Texture 2D LOD</code> (the only sampler available in the vertex stage), then sharpened with a contrast step.</li>
+							<li><strong>Player interaction</strong>: distance to the tracker turned into a falloff (full at the tracker, zero at the interaction radius). Vertices are pushed horizontally away in world space, then transformed back to object space.</li>
+							<li><strong>Combining them</strong>: sway and gust are restricted to X and Z so blades never stretch, then the height mask blends from the original to the displaced position, so roots never move.</li>
+						</ul>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><img src="images/shaders/grass-interaction.png" alt="Top-down view: grass pushed outward around the tracker sphere" /></span></div>
+							</div>
+						</div>
+						<p style="font-size:0.9em;opacity:0.85"><em>Player interaction seen from above: the grass is pushed away from the tracker. The interaction radius is deliberately enlarged here to make the effect easier to see.</em></p>
+
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-6"><span class="image fit"><img src="images/shaders/grass-wind-texture.png" alt="Wind texture whose bands become travelling gusts" /></span></div>
+								<div class="col-6"><p style="margin-top:1em">The wind texture. Sampled with world X/Z and scrolled over time, its light and dark bands become gusts sweeping across the whole field.</p></div>
+							</div>
+						</div>
+
+						<hr style="border-width: 5px" />
+						<h2>Fragment stage: how the grass is coloured</h2>
+						<hr />
+						<ul>
+							<li><strong>Distance tint</strong>: near and far colours blended by distance to the camera.</li>
+							<li><strong>Wind colouring</strong>: the same gust mask that moves the grass also lightens it, so you can <em>see</em> the wind travelling across the field.</li>
+							<li><strong>Height gating</strong> keeps the gust colour on the upper part of the blade, and an alpha-clipped texture cuts the blade shape out of each quad.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>C# helper</h2>
+						<hr />
+<pre><code>[ExecuteAlways]
+public class TrackerPositionSender : MonoBehaviour
+{
+    [SerializeField] private Transform tracker;
+    private static readonly int TrackerPositionID = Shader.PropertyToID("_trackerposition");
+
+    private void Update()
+    {
+        Transform t = tracker != null ? tracker : transform;
+        Shader.SetGlobalVector(TrackerPositionID, t.position);
+    }
+}</code></pre>
+						<p>It runs in edit mode too, so the interaction can be previewed without entering Play.</p>
+
+						<hr />
+						<p style="font-size: 0.85em; opacity: 0.8;">Grass blade meshes/textures, trees and skybox come from free asset packs (The Illustrated Nature, Midgard Skybox). The shader graph and the C# script are my own work.</p>
+					</div>
+				</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; LASSIOUED Badis. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

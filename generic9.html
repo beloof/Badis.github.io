@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<title>OpenGL Paint Application – C++</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">&#x1F878</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#" class="active">OpenGL Paint</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<section id="main" class="wrapper">
+					<div class="inner">
+						<h1 class="major">OpenGL Paint Application</h1>
+						<p><strong>C++17 · OpenGL / GLUT · CMake · stb_image</strong> — 2026, in progress.</p>
+						<ul class="actions">
+							<li><a href="https://github.com/beloof/paint-like-opengl" class="button" style="font-size: 15px;"><i class="fa-brands fa-github"></i>&nbsp; Repository</a></li>
+						</ul>
+
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><video src="images/videos/paint.mp4" poster="images/videos/paint-poster.jpg" autoplay muted loop playsinline controls preload="metadata" style="width:100%;display:block" aria-label="Drawing with several brushes, undo/redo and window resize"></video></span></div>
+							</div>
+						</div>
+						<p>A Paint-style drawing application written from scratch in C++: a CPU canvas streamed to an OpenGL texture, a brush system with eight brush tips, undo/redo, and zoom and pan.</p>
+
+						<hr style="border-width: 5px" />
+						<h2>Brush system</h2>
+						<hr />
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<div class="col-12"><span class="image fit"><img src="images/opengl/brush-tips.png" alt="The eight brush tips: round hard, medium, soft, square, chisel, bristle, chalk and splatter" /></span></div>
+							</div>
+						</div>
+						<ul>
+							<li>An abstract <code>Brush</code> interface ("apply one dab to the canvas") with two implementations: <strong>MaskBrush</strong>, driven by a grayscale opacity mask loaded with stb_image, and <strong>SoftBrush</strong>, a procedural round brush with adjustable hardness.</li>
+							<li>The eight tips (hard/medium/soft round, square, chisel, bristle, chalk, splatter) are <strong>generated procedurally</strong> by a small Python/NumPy script (smoothstep edges, Gaussian falloff, seeded noise).</li>
+							<li>Strokes place dabs along each mouse segment at a spacing proportional to brush size, and carry the leftover distance between segments, so spacing stays even however the mouse events arrive.</li>
+							<li>Each dab is clipped to the canvas once rather than per pixel, and blending rounds instead of truncating, so many low-opacity dabs don't drift darker.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>Rendering</h2>
+						<hr />
+						<ul>
+							<li>The canvas is an RGB buffer on the CPU, displayed as a textured quad with an orthographic projection.</li>
+							<li>The canvas tracks a <strong>dirty rectangle</strong> of everything changed since the last frame, and only that region is re-uploaded with <code>glTexSubImage2D</code> instead of the whole image.</li>
+							<li>Zoom, panning and window resize keep the view clamped to the canvas.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>Undo / redo with minimal memory</h2>
+						<hr />
+						<ul>
+							<li>Each edit (a stroke, a clear) becomes one history entry storing <strong>only the smallest rectangle that changed</strong>, as it was before the edit.</li>
+							<li>Undo and redo <strong>swap</strong> that rectangle with the canvas, so a single buffer serves both directions.</li>
+							<li>History is capped by both step count and total bytes, and a new edit discards the redo stack.</li>
+						</ul>
+
+						<hr style="border-width: 5px" />
+						<h2>Architecture</h2>
+						<hr />
+						<div class="table-wrapper">
+							<table>
+								<thead><tr><th>File</th><th>Role</th></tr></thead>
+								<tbody>
+									<tr><td>app.cpp / app.h</td><td>GLUT callbacks, view (zoom/pan), input routing</td></tr>
+									<tr><td>canvas.cpp / canvas.h</td><td>Pixel buffer, stroke spacing, dirty-rectangle tracking</td></tr>
+									<tr><td>brush.cpp / brush.h</td><td>Abstract brush, mask and procedural brushes, blending</td></tr>
+									<tr><td>brush_library.cpp</td><td>Loads the brush tips from assets</td></tr>
+									<tr><td>history.cpp / history.h</td><td>Rectangle-patch undo/redo with memory limits</td></tr>
+									<tr><td>panel.cpp / tool_state.cpp</td><td>Tool panel UI (colours, eraser, size, brush) and selected-tool state</td></tr>
+									<tr><td>tools/generate_brushes.py</td><td>Procedural brush-tip generation (NumPy, Pillow)</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; LASSIOUED Badis. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
